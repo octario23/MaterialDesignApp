@@ -1,0 +1,10 @@
+.gradle/2.10/
+.idea/
+XYZReader/build/generated/source/
+XYZReader/build/intermediates/
+XYZReader/build/tmp/
+build/generated/mockable-android-22.jar
+build/generated/mockable-android-23.jar
+build/intermediates/dex-cache/cache.xml
+MaterialDesignApp.iml
+XYZReader/XYZReader.iml
