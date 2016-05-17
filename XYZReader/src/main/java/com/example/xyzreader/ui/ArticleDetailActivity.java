@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 
 import com.example.xyzreader.R;
@@ -37,6 +38,7 @@ public class ArticleDetailActivity extends ActionBarActivity
     private MyPagerAdapter mPagerAdapter;
     private View mUpButtonContainer;
     private View mUpButton;
+    private int mStartingPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,11 @@ public class ArticleDetailActivity extends ActionBarActivity
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                postponeEnterTransition();
         }
         setContentView(R.layout.activity_article_detail);
 
         getLoaderManager().initLoader(0, null, this);
-
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -90,15 +92,17 @@ public class ArticleDetailActivity extends ActionBarActivity
             mUpButtonContainer.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
                 @Override
                 public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
-                    view.onApplyWindowInsets(windowInsets);
-                    mTopInset = windowInsets.getSystemWindowInsetTop();
-                    mUpButtonContainer.setTranslationY(mTopInset);
-                    updateUpButtonPosition();
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        view.onApplyWindowInsets(windowInsets);
+                        mTopInset = windowInsets.getSystemWindowInsetTop();
+                        mUpButtonContainer.setTranslationY(mTopInset);
+                        updateUpButtonPosition();
+                    }
                     return windowInsets;
                 }
             });
         }
-
+        mStartingPosition = getIntent().getIntExtra(ArticleListActivity.EXTRA_STARTING_POSITION, 0);
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
@@ -169,7 +173,7 @@ public class ArticleDetailActivity extends ActionBarActivity
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
-            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID),position,mStartingPosition);
         }
 
         @Override
