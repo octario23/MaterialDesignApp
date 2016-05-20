@@ -8,3 +8,5 @@ build/generated/mockable-android-23.jar
 build/intermediates/dex-cache/cache.xml
 MaterialDesignApp.iml
 XYZReader/XYZReader.iml
+XYZReader/build/outputs/apk/XYZReader-debug-unaligned.apk
+XYZReader/build/outputs/apk/XYZReader-debug.apk

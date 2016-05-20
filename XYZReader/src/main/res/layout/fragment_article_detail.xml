@@ -21,10 +21,11 @@
                 <!--suppress AndroidLintContentDescription -->
                 <ImageView
                     android:id="@+id/photo"
+                    android:layout_gravity="center_horizontal|top"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    />
+                    android:layout_height="@dimen/detail_card_top_margin"
+                />
 
                 <View
                     android:layout_width="match_parent"
